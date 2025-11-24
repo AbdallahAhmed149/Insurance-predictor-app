@@ -8,7 +8,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 
 # Dataset Link: https://www.kaggle.com/datasets/mirichoi0218/insurance
-insurance_data = pd.read_csv("Linear Regression\data\insurance.csv")
+insurance_data = pd.read_csv("Linear Regression/data/insurance.csv")
 
 # Exploring Data
 print(insurance_data.head())
@@ -128,5 +128,6 @@ print(f"Cross Validation Score: {np.mean(cross_validation)}")
 # Saving the model
 import joblib
 
-joblib.dump(model_LR, "Linear Regression\models\insurance_model.pkl")
-joblib.dump(onehot_encoding, "Linear Regression\models\onehot_encoder.pkl")
+joblib.dump(model_LR, "Linear Regression/models/insurance_model.pkl")
+joblib.dump(onehot_encoding, "Linear Regression/models/onehot_encoder.pkl")
+
