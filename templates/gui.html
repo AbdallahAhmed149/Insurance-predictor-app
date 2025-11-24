@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Cost Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen p-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-indigo-100 rounded-full mb-4">
+                    <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                        </path>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Insurance Cost Predictor</h1>
+                <p class="text-gray-600">Enter your details to estimate your insurance charges</p>
+            </div>
+
+            <form id="predictionForm" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <!-- Age -->
+                <div>
+                    <label for="age" class="text-sm font-semibold text-gray-700 mb-2 block">
+                        Age: <span id="ageValue">30</span>
+                    </label>
+                    <input type="range" id="age" name="age" min="18" max="80" value="30"
+                        class="w-full h-2 bg-indigo-200 rounded-lg appearance-none cursor-pointer" aria-label="Age">
+                    <div class="flex justify-between text-xs text-gray-500 mt-1">
+                        <span>18</span>
+                        <span>80</span>
+                    </div>
+                </div>
+
+                <!-- BMI -->
+                <div>
+                    <label for="bmi" class="text-sm font-semibold text-gray-700 mb-2 block">
+                        BMI: <span id="bmiValue">25.0</span>
+                    </label>
+                    <input type="range" id="bmi" name="bmi" min="15" max="50" step="0.1" value="25"
+                        class="w-full h-2 bg-indigo-200 rounded-lg appearance-none cursor-pointer" aria-label="BMI">
+                    <div class="flex justify-between text-xs text-gray-500 mt-1">
+                        <span>15</span>
+                        <span>50</span>
+                    </div>
+                </div>
+
+                <!-- Sex -->
+                <div>
+                    <label for="sex" class="text-sm font-semibold text-gray-700 mb-2 block">Sex</label>
+                    <select id="sex" name="sex"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+
+                <!-- Children -->
+                <div>
+                    <label for="children" class="text-sm font-semibold text-gray-700 mb-2 block">
+                        Children: <span id="childrenValue">0</span>
+                    </label>
+                    <input type="range" id="children" name="children" min="0" max="5" value="0"
+                        class="w-full h-2 bg-indigo-200 rounded-lg appearance-none cursor-pointer"
+                        aria-label="Number of children">
+                    <div class="flex justify-between text-xs text-gray-500 mt-1">
+                        <span>0</span>
+                        <span>5</span>
+                    </div>
+                </div>
+
+                <!-- Smoker -->
+                <div>
+                    <label for="smoker" class="text-sm font-semibold text-gray-700 mb-2 block">Smoker</label>
+                    <select id="smoker" name="smoker"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        <option value="no">No</option>
+                        <option value="yes">Yes</option>
+                    </select>
+                </div>
+
+                <!-- Region -->
+                <div>
+                    <label for="region" class="text-sm font-semibold text-gray-700 mb-2 block">Region</label>
+                    <select id="region" name="region"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        <option value="northeast">Northeast</option>
+                        <option value="northwest">Northwest</option>
+                        <option value="southeast">Southeast</option>
+                        <option value="southwest">Southwest</option>
+                    </select>
+                </div>
+            </form>
+
+            <!-- Predict Button -->
+            <button id="predictBtn"
+                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 shadow-lg hover:shadow-xl">
+                Predict Insurance Cost
+            </button>
+
+            <!-- Loading State -->
+            <div id="loading" class="hidden mt-8 text-center">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                <p class="text-gray-600 mt-2">Calculating...</p>
+            </div>
+
+            <!-- Prediction Result -->
+            <div id="result"
+                class="hidden mt-8 p-6 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl border-2 border-indigo-200">
+                <div class="text-center">
+                    <p class="text-sm font-semibold text-gray-600 mb-2">Estimated Annual Cost</p>
+                    <p id="predictionValue" class="text-4xl font-bold text-indigo-600"></p>
+                    <p class="text-xs text-gray-500 mt-2">This is an estimate based on the provided information</p>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="error" class="hidden mt-8 p-4 bg-red-50 rounded-lg border border-red-200">
+                <p class="text-sm text-red-700"></p>
+            </div>
+
+            <!-- Info Box -->
+            <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <p class="text-sm text-gray-700">
+                    <span class="font-semibold">Note:</span> This predictor uses a machine learning model trained on
+                    historical insurance data. Actual insurance costs may vary based on additional factors and insurance
+                    provider policies.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update slider values in real-time
+        document.getElementById('age').addEventListener('input', function () {
+            document.getElementById('ageValue').textContent = this.value;
+        });
+
+        document.getElementById('bmi').addEventListener('input', function () {
+            document.getElementById('bmiValue').textContent = parseFloat(this.value).toFixed(1);
+        });
+
+        document.getElementById('children').addEventListener('input', function () {
+            document.getElementById('childrenValue').textContent = this.value;
+        });
+
+        // Handle form submission
+        document.getElementById('predictBtn').addEventListener('click', async function () {
+            const formData = {
+                age: document.getElementById('age').value,
+                sex: document.getElementById('sex').value,
+                bmi: document.getElementById('bmi').value,
+                children: document.getElementById('children').value,
+                smoker: document.getElementById('smoker').value,
+                region: document.getElementById('region').value
+            };
+
+            // Show loading, hide result and error
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('result').classList.add('hidden');
+            document.getElementById('error').classList.add('hidden');
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                // Hide loading
+                document.getElementById('loading').classList.add('hidden');
+
+                if (data.success) {
+                    // Show result
+                    document.getElementById('predictionValue').textContent =
+                        '$' + data.prediction.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    document.getElementById('result').classList.remove('hidden');
+                } else {
+                    // Show error
+                    document.getElementById('error').querySelector('p').textContent =
+                        'Error: ' + data.error;
+                    document.getElementById('error').classList.remove('hidden');
+                }
+            } catch (error) {
+                // Hide loading
+                document.getElementById('loading').classList.add('hidden');
+
+                // Show error
+                document.getElementById('error').querySelector('p').textContent =
+                    'Error connecting to server: ' + error.message;
+                document.getElementById('error').classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>
