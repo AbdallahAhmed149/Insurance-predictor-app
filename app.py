@@ -7,8 +7,8 @@ app = Flask(__name__)
 CORS(app)
 
 # Load the trained model and encoder
-model = joblib.load("Linear Regression/model/insurance_model.pkl")
-encoder = joblib.load("Linear Regression/model/onehot_encoder.pkl")
+model = joblib.load("Linear Regression/models/insurance_model.pkl")
+encoder = joblib.load("Linear Regression/models/onehot_encoder.pkl")
 
 
 @app.route("/")
@@ -103,4 +103,5 @@ def predict():
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
+
 
