@@ -67,6 +67,12 @@ By default, the app will be available at [http://localhost:5000](http://localhos
 
 ---
 
+## 🌍 Live Application
+
+Try the app instantly: [https://abdallahahmed.pythonanywhere.com/](https://abdallahahmed.pythonanywhere.com/)
+
+---
+
 ## 🖥️ Web Demo
 
 - Open your browser and go to `http://localhost:5000`.
